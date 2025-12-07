@@ -1,0 +1,11 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+<h2>Welcome to DemoMVP</h2>
+<p>Please log in to continue.</p>
+
+<button class="btn btn-primary" @onclick="GoLogin">Go to Login</button>
+
+@code {
+    void GoLogin() => Navigation.NavigateTo("/login");
+}
+@inject NavigationManager Navigation

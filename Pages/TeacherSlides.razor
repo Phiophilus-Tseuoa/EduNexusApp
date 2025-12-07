@@ -1,0 +1,43 @@
+@page "/teacher-slides"
+@inject DemoMVP.Services.TeacherClassService TeacherClass
+
+
+
+
+
+<h2 class="mb-4">Slides</h2>
+
+<div class="card shadow p-4 mb-4" style="max-width: 600px;">
+    <h5>Add Slide</h5>
+    <input class="form-control mb-3" @bind="NewSlide" placeholder="Slide title..." />
+    <button class="btn btn-primary" @onclick="AddSlide">Add Slide</button>
+</div>
+
+@if (TeacherClass.UploadedSlides.Count == 0)
+{
+    <p class="text-muted">No slides yet.</p>
+}
+else
+{
+    <div class="list-group shadow" style="max-width: 600px;">
+        @foreach (var slide in TeacherClass.UploadedSlides)
+        {
+            <div class="list-group-item d-flex justify-content-between">
+                @slide
+                <span class="badge bg-secondary">Slide</span>
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+    private string NewSlide = "";
+
+    void AddSlide()
+    {
+        TeacherClass.AddSlide(NewSlide);
+        NewSlide = "";
+    }
+}
+

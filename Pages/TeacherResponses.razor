@@ -1,0 +1,32 @@
+@page "/teacher-responses"
+@inject DemoMVP.Services.TeacherClassService TeacherClass
+
+
+
+<h3>Student Responses</h3>
+
+@if (TeacherClass.Responses.Count == 0)
+{
+    <p class="text-muted">No responses yet.</p>
+}
+else
+{
+    <table class="table table-bordered" style="max-width: 600px;">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in TeacherClass.Responses)
+            {
+                <tr>
+                    <td>@r.Student</td>
+                    <td>@r.Answer</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

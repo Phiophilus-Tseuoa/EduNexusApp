@@ -1,0 +1,72 @@
+
+@using DemoMVP.Services;
+@inject NavigationManager Nav
+@inject TeacherDataService TeacherData
+@inject StudentService StudentData
+
+<div class="nav-container">
+
+    <h3 class="title">DemoMVP</h3>
+
+    @if (TeacherData.LoggedInTeacher is not null)
+    {
+        <ul>
+            <li @onclick='() => Go("/teacher-dashboard")'>Dashboard</li>
+            <li @onclick='() => Go("/teacher-slides")'>Slides</li>
+            <li @onclick='() => Go("/teacher-quiz")'>Quizzes</li>
+            <li @onclick='() => Go("/teacher-responses")'>Responses</li>
+        </ul>
+    }
+    else if (StudentData.LoggedInStudent is not null)
+    {
+        <ul>
+            <li @onclick='() => Go("/student-subjects")'>My Subjects</li>
+            <li @onclick='() => Go("/student-attendance")'>Attendance</li>
+        </ul>
+    }
+    else
+    {
+        <ul>
+            <li @onclick='() => Go("/login")'>Login</li>
+        </ul>
+    }
+
+</div>
+
+@code {
+    void Go(string route)
+    {
+        Nav.NavigateTo(route);
+    }
+}
+
+<style>
+    .nav-container {
+        color: white;
+    }
+
+    .title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        padding: 10px;
+        margin-bottom: 5px;
+        background: #34495e;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    li:hover {
+        background: #3d566e;
+    }
+</style>
+

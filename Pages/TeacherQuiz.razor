@@ -1,0 +1,61 @@
+@page "/teacher-quiz"
+@inject DemoMVP.Services.TeacherClassService TeacherClass
+
+
+<h2 class="mb-4">Create Quiz</h2>
+
+<div class="card shadow p-4 mb-3" style="max-width: 600px;">
+    <label class="form-label fw-bold">Question</label>
+    <input class="form-control mb-3" @bind="Question" />
+
+    <label class="form-label fw-bold">Options</label>
+    @for (int i = 0; i < Options.Count; i++)
+    {
+        <input class="form-control mb-2" @bind="Options[i]" placeholder="Option @(i+1)" />
+    }
+
+    <button class="btn btn-outline-secondary mb-3" @onclick="AddOption">Add Option</button>
+    <button class="btn btn-primary" @onclick="SaveQuiz">Save Quiz</button>
+</div>
+
+<h4>Existing Quizzes</h4>
+
+@if (!TeacherClass.Quizzes.Any())
+{
+    <p class="text-muted">No quizzes created yet.</p>
+}
+else
+{
+    @foreach (var quiz in TeacherClass.Quizzes)
+    {
+        <div class="card shadow p-3 mb-3" style="max-width: 600px;">
+            <strong>@quiz.Question</strong>
+            <ul>
+                @foreach (var o in quiz.Options)
+                {
+                    <li>@o</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+
+@code {
+    private string Question = "";
+    private List<string> Options = new() { "", "" };
+
+    void AddOption()
+    {
+        if (Options.Count < 4)
+            Options.Add("");
+    }
+
+    void SaveQuiz()
+    {
+        TeacherClass.AddQuiz(Question, Options.ToList());
+        Question = "";
+        Options = new() { "", "" };
+    }
+}
+

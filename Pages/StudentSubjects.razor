@@ -1,0 +1,71 @@
+
+@using DemoMVP.Services;
+@inject DemoMVP.Services.TeacherClassService TeacherClass
+
+@page "/student-subjects"
+
+@inject StudentService StudentService
+
+
+@inject DemoMVP.Services.TeacherDataService TeacherData
+
+<h2 class="mb-4">Subject</h2>
+
+<h4>Slides</h4>
+@if (!TeacherClass.UploadedSlides.Any())
+{
+    <p class="text-muted">No slides available.</p>
+}
+else
+{
+    <ul class="list-group shadow mb-4" style="max-width: 600px;">
+        @foreach (var slide in TeacherClass.UploadedSlides)
+        {
+            <li class="list-group-item">@slide</li>
+        }
+    </ul>
+}
+
+<h4>Quizzes</h4>
+@if (!TeacherClass.Quizzes.Any())
+{
+    <p class="text-muted">No quizzes for this subject.</p>
+}
+else
+{
+    @foreach (var quiz in TeacherClass.Quizzes)
+    {
+        <div class="card shadow p-3 mb-3" style="max-width: 600px;">
+            <h5>@quiz.Question</h5>
+
+            @foreach (var opt in quiz.Options)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" 
+                           name="@quiz.Question" value="@opt"
+                           @onchange="() => SelectedAnswer = opt" />
+
+                    <label class="form-check-label">@opt</label>
+                </div>
+            }
+
+            <button class="btn btn-success mt-3" @onclick="() => SubmitAnswer(quiz.Question)">Submit</button>
+        </div>
+    }
+}
+
+
+
+@code {
+    private string SelectedAnswer = "";
+
+    void SubmitAnswer(string question)
+    {
+        if (string.IsNullOrWhiteSpace(SelectedAnswer))
+            return;
+
+        TeacherClass.AddResponse("Demo Student", SelectedAnswer);
+        SelectedAnswer = "";
+    }
+}
+

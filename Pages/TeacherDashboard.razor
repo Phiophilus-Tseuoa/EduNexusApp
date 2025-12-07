@@ -1,0 +1,61 @@
+@page "/teacher-dashboard"
+@using DemoMVP.Services;
+@inject TeacherDataService TeacherData
+
+@inject NavigationManager Nav
+
+<h2>Teacher Dashboard</h2>
+
+<p>Welcome, @TeacherData.LoggedInTeacher?.Name!</p>
+
+<ul>
+    <li @onclick='() => Nav.NavigateTo("/teacher-slides")'>Manage Slides</li>
+    <li @onclick='() => Nav.NavigateTo("/teacher-quiz")'>Create Quizzes</li>
+    <li @onclick='() => Nav.NavigateTo("/teacher-responses")'>View Responses</li>
+</ul>
+
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        padding: 10px;
+        background: #bdc3c7;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    li:hover {
+        background: #d1d5d8;
+    }
+</style>
+
+
+@code {
+    void Go(string r) => Nav.NavigateTo(r);
+}
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .card:hover {
+        background: #e8e8e8;
+    }
+</style>

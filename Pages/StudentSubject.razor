@@ -1,0 +1,42 @@
+@page "/student-subject/{id}"
+@inject DemoMVP.Services.TeacherClassService TeacherClass
+@inject NavigationManager Nav
+
+<h2>Subject: @Id</h2>
+
+<h4>Slides</h4>
+<ul>
+    @foreach (var slide in TeacherClass.UploadedSlides)
+    {
+        <li>@slide</li>
+    }
+</ul>
+
+<h4 class="mt-3">Quiz</h4>
+@if (TeacherClass.Quizzes.Count == 0)
+{
+    <p>No quiz available yet.</p>
+}
+else
+{
+    var quiz = TeacherClass.Quizzes.Last();
+
+    <h5>@quiz.Question</h5>
+
+    @foreach (var opt in quiz.Options)
+    {
+        <button class="btn btn-outline-primary m-1" @onclick="() => Submit(opt)">
+            @opt
+        </button>
+    }
+}
+
+@code {
+    [Parameter] public required string Id { get; set; }
+
+    void Submit(string answer)
+    {
+        TeacherClass.AddResponse("Student1", answer);
+        Nav.NavigateTo("/thank-you");
+    }
+}

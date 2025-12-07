@@ -1,0 +1,43 @@
+@page "/teacher-students/{SubjectId:int}"
+@using AttendanceManagementSystem.Models.DTOs
+@using DemoMVP.Services
+@inject TeacherSubjectService TeacherSubject
+@inject NavigationManager Nav
+
+<h3>Students</h3>
+
+@if (students == null)
+{
+    <p>Loading...</p>
+}
+else if (students.Count == 0)
+{
+    <p>No students enrolled.</p>
+}
+else
+{
+    <button @onclick="TakeAttendance">Take Attendance</button>
+
+    <ul>
+        @foreach (var s in students)
+        {
+            <li>@s.FullName</li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter] public int SubjectId { get; set; }
+
+    private List<TeacherStudentDto>? students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        students = await TeacherSubject.GetStudentsBySubject(SubjectId);
+    }
+
+    void TakeAttendance()
+    {
+        Nav.NavigateTo($"/teacher-attendance/{SubjectId}");
+    }
+}

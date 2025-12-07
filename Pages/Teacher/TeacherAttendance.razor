@@ -1,0 +1,47 @@
+@page "/teacher-attendance/{SubjectId:int}"
+@using AttendanceManagementSystem.Models.DTOs
+@using DemoMVP.Services
+@inject TeacherSubjectService TeacherSubject
+@inject NavigationManager Nav
+
+<h3>Take Attendance</h3>
+
+@if (students == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="students" OnValidSubmit="Submit">
+        @foreach (var s in students)
+        {
+            <div>
+                <input type="checkbox" @bind="s.IsPresent" />
+                @s.FullName
+            </div>
+        }
+
+        <button type="submit">Submit Attendance</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int SubjectId { get; set; }
+
+    private List<TeacherStudentDto>? students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        students = await TeacherSubject.GetStudentsBySubject(SubjectId);
+    }
+
+    async Task Submit()
+    {
+        bool result = await TeacherSubject.SubmitAttendance(students);
+
+        if (result)
+            Nav.NavigateTo("/teacher-dashboard");
+        else
+            Console.WriteLine("Attendance failed");
+    }
+}

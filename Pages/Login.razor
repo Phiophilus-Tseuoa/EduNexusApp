@@ -1,0 +1,68 @@
+@using DemoMVP.Services
+
+
+@using DemoMVP.Models
+
+
+@page "/login"
+
+@inject NavigationManager Nav
+@inject TeacherDataService TeacherData
+@inject StudentService StudentData
+
+<h2>Login</h2>
+
+<div class="login-box">
+
+    <label>Email:</label>
+    <input class="form-control" @bind="Email" />
+
+    <label>Password:</label>
+    <input class="form-control" type="password" @bind="Password" />
+
+    <button class="btn btn-success mt-3" @onclick="LoginUser">Login</button>
+
+    @if (ErrorMessage is not null)
+    {
+        <p class="text-danger mt-2">@ErrorMessage</p>
+    }
+</div>
+
+@code {
+    string Email = "";
+    string Password = "";
+    string? ErrorMessage;
+
+    async Task LoginUser()
+    {
+        var teacher = TeacherData.GetTeacherByEmail(Email);
+        var student = StudentData.GetStudentByEmail(Email);
+
+        if (teacher is not null)
+        {
+            TeacherData.LoggedInTeacher = teacher;
+            Nav.NavigateTo("/teacher-dashboard");
+        }
+        else if (student is not null)
+        {
+            StudentData.LoggedInStudent = student;
+            Nav.NavigateTo("/student-subjects");
+        }
+        else
+        {
+            ErrorMessage = "Invalid credentials.";
+        }
+    }
+}
+
+<style>
+    .login-box {
+        max-width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+
+

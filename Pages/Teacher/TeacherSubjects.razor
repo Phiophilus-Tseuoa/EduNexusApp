@@ -1,0 +1,48 @@
+@page "/teacher-subjects"
+@using AttendanceManagementSystem.Models.DTOs
+@using DemoMVP.Services
+@inject TeacherDataService TeacherData
+@inject TeacherSubjectService TeacherSubject
+@inject NavigationManager Nav
+
+<h3>Your Subjects</h3>
+
+@if (subjects == null)
+{
+    <p>Loading...</p>
+}
+else if (subjects.Count == 0)
+{
+    <p>You have no assigned subjects.</p>
+}
+else
+{
+    <ul>
+        @foreach (var s in subjects)
+        {
+            <li @onclick="() => ViewStudents(s.SubjectId)">
+                @s.SubjectName (@s.GradeLevel @s.Section)
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private List<TeacherSubjectDto>? subjects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (TeacherData.LoggedInTeacher == null)
+        {
+            Nav.NavigateTo("/login");
+            return;
+        }
+
+        subjects = await TeacherSubject.GetTeacherSubjects(TeacherData.LoggedInTeacher.Email);
+    }
+
+    void ViewStudents(int subjectId)
+    {
+        Nav.NavigateTo($"/teacher-students/{subjectId}");
+    }
+}
