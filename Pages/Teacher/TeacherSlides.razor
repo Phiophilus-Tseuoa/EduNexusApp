@@ -1,0 +1,55 @@
+@page "/teacher/slides"
+@inject DemoMVP.Services.TeacherClassService TeacherClass
+@inject DemoMVP.Services.TeacherDataService TeacherData
+
+<h3>Manage Slides</h3>
+
+@if (TeacherData.LoggedInTeacher == null)
+{
+    <p>You are not logged in.</p>
+    <NavLink href="/login">Go to Login</NavLink>
+}
+else
+{
+    <div class="card p-3">
+
+        <h4>Upload New Slide</h4>
+
+        <input class="form-control" placeholder="Enter slide name..." @bind="newSlide" />
+
+        <button class="btn btn-primary mt-2" @onclick="AddSlide">
+            Add Slide
+        </button>
+
+        <hr />
+
+        <h4>Your Slides</h4>
+
+        @if (TeacherClass.UploadedSlides.Count == 0)
+        {
+            <p>No slides added yet.</p>
+        }
+        else
+        {
+            <ul class="list-group">
+                @foreach (var slide in TeacherClass.UploadedSlides)
+                {
+                    <li class="list-group-item">@slide</li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+@code {
+    private string newSlide = string.Empty;
+
+    private void AddSlide()
+    {
+        if (!string.IsNullOrWhiteSpace(newSlide))
+        {
+            TeacherClass.AddSlide(newSlide.Trim());
+            newSlide = string.Empty;
+        }
+    }
+}

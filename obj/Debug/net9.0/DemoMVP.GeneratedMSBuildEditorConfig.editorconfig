@@ -72,6 +72,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxUZWFjaGVyQXR0ZW5kYW5jZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/final_project/DemoMVP/Pages/Teacher/TeacherSlides.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxUZWFjaGVyU2xpZGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/final_project/DemoMVP/Pages/Teacher/TeacherStudents.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxUZWFjaGVyU3R1ZGVudHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
